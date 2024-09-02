@@ -1,1 +1,68 @@
-<h1>Init</h1>
+@if (isLoading() && !tableData.data) {
+  <div class="spinner">
+    <p-progressSpinner ariaLabel="loading" />
+  </div>
+} @else {
+  <p-table
+    [value]="tableData.data"
+    [rows]="rows"
+    [showCurrentPageReport]="true"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="width:5%">Avatar</th>
+        <th style="width:15%">Full name</th>
+        <th style="width:5%">Age</th>
+        <th style="width:25%">Address</th>
+        <th style="width:10%">Balance</th>
+        <th style="width:15%">Company</th>
+        <th style="width:5%">Fav Fruit</th>
+        <th style="width:15%">Tags</th>
+        <th style="width:5%">Active</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowValue>
+      <tr>
+        @let fullName = getFullName(rowValue);
+        <td>
+          <p-avatar 
+            [image]="rowValue.picture"
+            size="large" 
+            shape="circle" 
+          />
+        </td>
+        <td>{{ fullName }}</td>
+        <td>{{ rowValue.age }}</td>
+        <td>{{ rowValue.address }}</td>
+        <td>{{ rowValue.balance }}</td>
+        <td>{{ rowValue.company }}</td>
+        <td>{{ rowValue.favoriteFruit }}</td>
+        <td>{{ rowValue.tags }}</td>
+        <td>
+          <p-checkbox 
+            [(ngModel)]="rowValue.isActive" 
+            [disabled]="true" 
+            [binary]="true" 
+            inputId="binary" 
+          />
+        </td>
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-paginator 
+    (onPageChange)="onPageChange($event)" 
+    [rows]="rows" 
+    [totalRecords]="tableData.items" 
+    [rowsPerPageOptions]="[5, 10, 20, 30]" 
+  />
+
+  <p-dialog 
+    [modal]="true"
+    [(visible)]="visible" 
+    [closable]="false"
+    [draggable]="false"
+  >
+    <p-progressSpinner ariaLabel="loading" />
+  </p-dialog>
+}
