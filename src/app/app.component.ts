@@ -10,6 +10,7 @@ import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AvatarModule } from 'primeng/avatar';
 import { IData, ITableData } from './common/interfaces'
+import { SortMeta } from 'primeng/api'
 
 @Component({
   selector: 'app-root',
@@ -34,13 +35,11 @@ export class AppComponent implements OnInit {
 
   rows: number | undefined = 10;
 
-  isLoading = signal(true)
+  sortField: string | null = null;
 
-  visible = false;
+  isLoading = signal(true);
 
-  showDialog() {
-      this.visible = true;
-  }
+  isVisible = false;
 
   constructor(private _httpService: HttpService) {}
 
@@ -50,9 +49,9 @@ export class AppComponent implements OnInit {
 
   onPageChange(e: PaginatorState) {
     this.isLoading.set(true)
-    this.visible = true;
+    this.isVisible = true;
     this.rows = e.rows;
-    this.page = e.page ? e.page + 1 : undefined;
+    this.page = e.page !== undefined ? e.page + 1 : undefined;
     this.getTableData()
   }
 
@@ -67,15 +66,23 @@ export class AppComponent implements OnInit {
   getTableData() {
     this._httpService.getData<IData>({
       _page: this.page,
-      _per_page: this.rows
+      _per_page: this.rows,
+      _sort: this.sortField,
     })
       .pipe(take(1))
       .subscribe({
         next: (data) => {
           this.tableData = data
+          this.isVisible = false;
           this.isLoading.set(false)
-          this.visible = false;
         },
       })
+  }
+
+  customSort(e: SortMeta) {
+    this.isLoading.set(true);
+    this.isVisible = true;
+    this.sortField = e.order > 0 ? e.field : `-${e.field}`;
+    this.getTableData();
   }
 }

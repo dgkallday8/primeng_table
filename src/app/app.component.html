@@ -7,18 +7,21 @@
     [value]="tableData.data"
     [rows]="rows"
     [showCurrentPageReport]="true"
+    [customSort]="true"
+    [lazy]="true"
+    (onSort)="customSort($event)"
   >
     <ng-template pTemplate="header">
       <tr>
-        <th style="width:5%">Avatar</th>
-        <th style="width:15%">Full name</th>
-        <th style="width:5%">Age</th>
-        <th style="width:25%">Address</th>
-        <th style="width:10%">Balance</th>
-        <th style="width:15%">Company</th>
-        <th style="width:5%">Fav Fruit</th>
-        <th style="width:15%">Tags</th>
-        <th style="width:5%">Active</th>
+        <th></th>
+        <th>Full Name</th>
+        <th pSortableColumn="age">Age <p-sortIcon field="age"></p-sortIcon></th>
+        <th>Address</th>
+        <th>Balance</th>
+        <th>Company</th>
+        <th>Fav Fruit</th>
+        <th>Tags</th>
+        <th>Active</th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowValue>
@@ -59,7 +62,7 @@
 
   <p-dialog 
     [modal]="true"
-    [(visible)]="visible" 
+    [(visible)]="isVisible" 
     [closable]="false"
     [draggable]="false"
   >
