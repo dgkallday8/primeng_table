@@ -3,12 +3,13 @@ import { HttpService } from './services/http.service'
 import { TableModule } from 'primeng/table';
 import { CommonModule } from '@angular/common';
 import { ButtonModule } from 'primeng/button';
-import { PaginatorModule } from 'primeng/paginator';
+import { PaginatorModule, PaginatorState } from 'primeng/paginator';
 import { take } from 'rxjs'
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AvatarModule } from 'primeng/avatar';
+import { IData, ITableData } from './common/interfaces'
 
 @Component({
   selector: 'app-root',
@@ -27,11 +28,11 @@ import { AvatarModule } from 'primeng/avatar';
   ],
 })
 export class AppComponent implements OnInit {
-  tableData: any = []
+  tableData!: IData;
   
-  page = 1;
+  page: number | undefined = 1;
 
-  rows = 10;
+  rows: number | undefined = 10;
 
   isLoading = signal(true)
 
@@ -47,20 +48,24 @@ export class AppComponent implements OnInit {
     this.getTableData()
   }
 
-  onPageChange(e: any) {
+  onPageChange(e: PaginatorState) {
     this.isLoading.set(true)
     this.visible = true;
     this.rows = e.rows;
-    this.page = e.page + 1;
+    this.page = e.page ? e.page + 1 : undefined;
     this.getTableData()
   }
 
-  getFullName(row: any) {
+  get isShowSpinner() {
+    return this.isLoading() && !this.tableData?.data
+  }
+
+  getFullName(row: ITableData) {
     return `${row.name?.first} ${row.name?.last}`
   }
 
   getTableData() {
-    this._httpService.getData({
+    this._httpService.getData<IData>({
       _page: this.page,
       _per_page: this.rows
     })
