@@ -2,11 +2,10 @@
   "name": "cryptostamp",
   "version": "0.0.0",
   "scripts": {
-    "ng": "ng",
-    "start": "ng serve",
-    "build": "ng build",
-    "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "start": "concurrently npm:serve:*",
+    "serve:start": "ng serve",
+    "serve:json": "json-server --watch db.json --port 4242",
+    "build": "ng build"
   },
   "private": true,
   "dependencies": {
@@ -18,6 +17,9 @@
     "@angular/platform-browser": "^18.2.0",
     "@angular/platform-browser-dynamic": "^18.2.0",
     "@angular/router": "^18.2.0",
+    "concurrently": "^8.2.2",
+    "json-server": "^1.0.0-beta.2",
+    "primeng": "^17.18.9",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.14.10"
