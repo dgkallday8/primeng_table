@@ -9,8 +9,9 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AvatarModule } from 'primeng/avatar';
-import { IData, ITableData } from './common/interfaces'
+import { FavFruit, IData, ITableData } from './common/interfaces'
 import { SortMeta } from 'primeng/api'
+import { TagModule } from 'primeng/tag';
 
 @Component({
   selector: 'app-root',
@@ -26,6 +27,7 @@ import { SortMeta } from 'primeng/api'
     DialogModule,
     CheckboxModule,
     AvatarModule,
+    TagModule,
   ],
 })
 export class AppComponent implements OnInit {
@@ -61,6 +63,10 @@ export class AppComponent implements OnInit {
 
   getFullName(row: ITableData) {
     return `${row.name?.first} ${row.name?.last}`
+  }
+
+  getFavFruit(fruit: FavFruit) {
+    return fruit === FavFruit.apple ? 'success' : fruit === FavFruit.banana ? 'warning' : 'danger'
   }
 
   getTableData() {

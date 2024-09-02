@@ -15,11 +15,11 @@
       <tr>
         <th></th>
         <th>Full Name</th>
-        <th pSortableColumn="age">Age <p-sortIcon field="age"></p-sortIcon></th>
-        <th>Address</th>
-        <th>Balance</th>
-        <th>Company</th>
-        <th>Fav Fruit</th>
+        <th pSortableColumn="age">Age <p-sortIcon field="age" /></th>
+        <th pSortableColumn="address">Address <p-sortIcon field="address" /></th>
+        <th pSortableColumn="balance">Balance <p-sortIcon field="balance" /></th>
+        <th pSortableColumn="company">Company <p-sortIcon field="company" /></th>
+        <th pSortableColumn="favoriteFruit">Fav Fruit <p-sortIcon field="favoriteFruit" /></th>
         <th>Tags</th>
         <th>Active</th>
       </tr>
@@ -39,7 +39,9 @@
         <td>{{ rowValue.address }}</td>
         <td>{{ rowValue.balance }}</td>
         <td>{{ rowValue.company }}</td>
-        <td>{{ rowValue.favoriteFruit }}</td>
+        <td>
+          <p-tag [value]="rowValue.favoriteFruit" [severity]="getFavFruit(rowValue.favoriteFruit)"/>
+        </td>
         <td>{{ rowValue.tags }}</td>
         <td>
           <p-checkbox 

@@ -5,7 +5,7 @@ export interface IData {
   last: number;
   next: number; 
   pages: number;
-  prev: number | null 
+  prev: number | null;
 }
 
 export interface ITableData {
@@ -14,7 +14,7 @@ export interface ITableData {
   balance: string;
   compan: string;
   email: string;
-  favoriteFruit: string;
+  favoriteFruit: FavFruit;
   isActive: boolean; 
   name: IPersonName; 
   picture: string; 
@@ -27,7 +27,8 @@ export interface IPersonName {
   last: string;
 }
 
-export interface IDataFilters {
-  _page: number;
-  _per_page: number;
+export enum FavFruit {
+  apple = 'apple',
+  banana = 'banana',
+  strawberry = 'strawberry',
 }
