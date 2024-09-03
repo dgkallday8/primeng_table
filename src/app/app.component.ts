@@ -9,7 +9,7 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AvatarModule } from 'primeng/avatar';
-import { FavFruit, IData, ITableData } from './common/interfaces'
+import { FavFruit, ITableData } from './common/interfaces'
 import { SortMeta } from 'primeng/api'
 import { TagModule } from 'primeng/tag';
 
@@ -31,7 +31,7 @@ import { TagModule } from 'primeng/tag';
   ],
 })
 export class AppComponent implements OnInit {
-  tableData!: IData;
+  tableData!: ITableData[];
   
   page: number | undefined = 1;
 
@@ -39,9 +39,13 @@ export class AppComponent implements OnInit {
 
   sortField: string | null = null;
 
+  sortValue: string | null = null;
+
   isLoading = signal(true);
 
   isVisible = false;
+
+  totalCount = 0;
 
   constructor(private _httpService: HttpService) {}
 
@@ -58,7 +62,7 @@ export class AppComponent implements OnInit {
   }
 
   get isShowSpinner() {
-    return this.isLoading() && !this.tableData?.data
+    return this.isLoading() && !this.tableData
   }
 
   getFullName(row: ITableData) {
@@ -70,15 +74,24 @@ export class AppComponent implements OnInit {
   }
 
   getTableData() {
-    this._httpService.getData<IData>({
+    this._httpService.getData<ITableData[]>({
       _page: this.page,
-      _per_page: this.rows,
+      _limit: this.rows,
       _sort: this.sortField,
+      _order: this.sortValue,
     })
       .pipe(take(1))
       .subscribe({
-        next: (data) => {
-          this.tableData = data
+        next: (res) => {
+          const count = res.headers.get('x-total-count')
+
+          if (count) {
+            this.totalCount = Number(count)
+          }
+
+          if (res.body) {
+            this.tableData = res.body;
+          }
           this.isVisible = false;
           this.isLoading.set(false)
         },
@@ -88,7 +101,8 @@ export class AppComponent implements OnInit {
   customSort(e: SortMeta) {
     this.isLoading.set(true);
     this.isVisible = true;
-    this.sortField = e.order > 0 ? e.field : `-${e.field}`;
+    this.sortField = e.field;
+    this.sortValue = e.order > 0 ? 'asc' : `desc`;
     this.getTableData();
   }
 }

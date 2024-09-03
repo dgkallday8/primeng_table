@@ -1,13 +1,3 @@
-export interface IData {
-  data: ITableData[];
-  first: number;
-  items: number;
-  last: number;
-  next: number; 
-  pages: number;
-  prev: number | null;
-}
-
 export interface ITableData {
   address: string;
   age: number;

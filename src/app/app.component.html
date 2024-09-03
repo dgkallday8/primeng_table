@@ -4,7 +4,7 @@
   </div>
 } @else {
   <p-table
-    [value]="tableData.data"
+    [value]="tableData"
     [rows]="rows"
     [showCurrentPageReport]="true"
     [customSort]="true"
@@ -30,7 +30,6 @@
         <td>
           <p-avatar 
             [image]="rowValue.picture"
-            size="large" 
             shape="circle" 
           />
         </td>
@@ -48,7 +47,6 @@
             [(ngModel)]="rowValue.isActive" 
             [disabled]="true" 
             [binary]="true" 
-            inputId="binary" 
           />
         </td>
       </tr>
@@ -58,7 +56,7 @@
   <p-paginator 
     (onPageChange)="onPageChange($event)" 
     [rows]="rows" 
-    [totalRecords]="tableData.items" 
+    [totalRecords]="totalCount" 
     [rowsPerPageOptions]="[5, 10, 20, 30]" 
   />
 
