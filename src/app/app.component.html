@@ -11,7 +11,13 @@
     [lazy]="true"
     (onSort)="customSort($event)"
   >
+
     <ng-template pTemplate="header">
+      <tr>
+        <th colspan="9">
+          <input type="text" pInputText [formControl]="search" />
+        </th>
+      </tr>
       <tr>
         <th></th>
         <th>Full Name</th>
@@ -41,7 +47,9 @@
         <td>
           <p-tag [value]="rowValue.favoriteFruit" [severity]="getFavFruit(rowValue.favoriteFruit)"/>
         </td>
-        <td>{{ rowValue.tags }}</td>
+        <td>
+          <p class="truncate" [title]="rowValue.tags">{{ rowValue.tags }}</p>
+        </td>
         <td>
           <p-checkbox 
             [(ngModel)]="rowValue.isActive" 
