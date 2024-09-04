@@ -1,1 +1,105 @@
-<h1>Init</h1>
+@if (isShowSpinner) {
+  <div class="spinner">
+    <p-progressSpinner ariaLabel="loading" />
+  </div>
+} @else {
+  <p-table
+    [value]="tableData"
+    [rows]="rows"
+    [showCurrentPageReport]="true"
+    [customSort]="true"
+    [columns]="selectedColumns" 
+    [lazy]="true"
+    styleClass="p-datatable-gridlines"
+    (onSort)="customSort($event)"
+  >
+    <ng-template pTemplate="caption">
+      <div class="caption_wrapper">
+        <input type="text" pInputText [formControl]="search" placeholder="Search..."/>
+
+        <p-multiSelect 
+          [options]="cols" 
+          [showHeader]="false"
+          [(ngModel)]="selectedColumns" 
+          optionLabel="header"
+          [style]="{'min-width': '200px'}" 
+          placeholder="Choose Columns" />
+      </div>
+    </ng-template>
+
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th>Full Name</th>
+        @for (col of selectedColumns; track col.field) {
+          <th>
+            @switch (col.field) {
+              @case ('tags') {
+                {{col.header}}
+              }
+              @case ('isActive') {
+                {{col.header}}
+              }
+              @default {
+                <th [pSortableColumn]="col.field">
+                  {{col.header}} <p-sortIcon [field]="col.field" />
+                </th>
+              }
+            }
+          </th>
+        }
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-rowValue>
+      <tr>
+        @let fullName = getFullName(rowValue);
+        <td>
+          <p-avatar 
+            [image]="rowValue.picture"
+            shape="circle" 
+          />
+        </td>
+        <td>{{ fullName }}</td>
+        @for(col of selectedColumns; track col.field) {
+          <td>
+            @switch (col.field) {
+              @case ('favoriteFruit') {
+                <p-tag [value]="rowValue.favoriteFruit" [severity]="getFavFruit(rowValue.favoriteFruit)"/>
+              }
+              @case ('tags') {
+                <p class="truncate" [title]="rowValue.tags">{{ rowValue.tags }}</p>
+              }
+              @case ('isActive') {
+                <p-checkbox 
+                  [(ngModel)]="rowValue.isActive" 
+                  [disabled]="true" 
+                  [binary]="true" 
+                />
+              }
+              @default {
+                {{rowValue[col.field]}}
+              }
+            }
+          </td>
+        }
+      </tr>
+    </ng-template>
+  </p-table>
+
+  <p-paginator 
+    (onPageChange)="onPageChange($event)" 
+    [rows]="rows" 
+    [totalRecords]="totalCount" 
+    [rowsPerPageOptions]="[5, 10, 20, 30]" 
+  />
+
+  <p-dialog 
+    [modal]="true"
+    [(visible)]="isVisible" 
+    [closable]="false"
+    [draggable]="false"
+  >
+    <p-progressSpinner ariaLabel="loading" />
+  </p-dialog>
+}
