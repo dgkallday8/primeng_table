@@ -14,6 +14,14 @@ import { SortMeta } from 'primeng/api'
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms'
+import { DropdownModule } from 'primeng/dropdown';
+import { MultiSelectModule } from 'primeng/multiselect';
+
+interface Column {
+  field: string;
+  header: string;
+  default: boolean;
+}
 
 @Component({
   selector: 'app-root',
@@ -32,6 +40,8 @@ import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms'
     AvatarModule,
     TagModule,
     InputTextModule,
+    DropdownModule,
+    MultiSelectModule,
   ],
 })
 export class AppComponent implements OnInit, OnDestroy {
@@ -55,11 +65,25 @@ export class AppComponent implements OnInit, OnDestroy {
 
   totalCount = 0;
 
+  _selectedColumns!: Column[];
+
+  cols = [
+    { field: 'age', header: 'Age', default: true },
+    { field: 'address', header: 'Address', default: true },
+    { field: 'balance', header: 'Balance', default: false },
+    { field: 'company', header: 'Company', default: true },
+    { field: 'favoriteFruit', header: 'Fav Fruit', default: false },
+    { field: 'tags', header: 'Tags', default: false },
+    { field: 'isActive', header: 'Active', default: false },
+  ];
+
+
+
   constructor(private _httpService: HttpService, private _fb: FormBuilder) {}
 
-
-
   ngOnInit(): void {
+    this._selectedColumns = this.cols.filter((col) => col.default);
+
     this.search = this._fb.control('');
     this.getTableData();
     this.subscription = this.search.valueChanges
@@ -120,6 +144,14 @@ export class AppComponent implements OnInit, OnDestroy {
     this.sortField = e.field;
     this.sortValue = e.order > 0 ? 'asc' : `desc`;
     this.getTableData();
+  }
+
+  get selectedColumns(): Column[] {
+    return this._selectedColumns;
+  }
+
+  set selectedColumns(val: Column[]) {
+    this._selectedColumns = this.cols.filter((col) => val.includes(col));
   }
 
   ngOnDestroy(): void {
