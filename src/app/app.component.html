@@ -17,13 +17,27 @@
       <div class="caption_wrapper">
         <input type="text" pInputText [formControl]="search" placeholder="Search..."/>
 
-        <p-multiSelect 
-          [options]="cols" 
-          [showHeader]="false"
-          [(ngModel)]="selectedColumns" 
-          optionLabel="header"
-          [style]="{'min-width': '200px'}" 
-          placeholder="Choose Columns" />
+        <div>
+          <p-multiSelect 
+            class="multi"
+            [options]="cols" 
+            [showHeader]="false"
+            [(ngModel)]="selectedColumns" 
+            optionLabel="header"
+            [style]="{'min-width': '200px'}" 
+            placeholder="Choose Columns" 
+          />
+
+          <p-button 
+            [icon]="iconValue" 
+            [rounded]="true" 
+            [text]="true" 
+            [raised]="true" 
+            severity="warning" 
+            (click)="changeTheme()" 
+          />
+        </div>
+
       </div>
     </ng-template>
 

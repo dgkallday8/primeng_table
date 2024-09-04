@@ -16,6 +16,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms'
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
+import { ThemeService } from './services/theme.service'
 
 @Component({
   selector: 'app-root',
@@ -59,6 +60,10 @@ export class AppComponent implements OnInit, OnDestroy {
 
   totalCount = 0;
 
+  isLight = false;
+
+  selectedTheme = 'dark';
+
   _selectedColumns!: Column[];
 
   cols = [
@@ -71,11 +76,14 @@ export class AppComponent implements OnInit, OnDestroy {
     { field: 'isActive', header: 'Active', default: false },
   ];
 
-
-
-  constructor(private _httpService: HttpService, private _fb: FormBuilder) {}
+  constructor(
+    private _httpService: HttpService, 
+    private _fb: FormBuilder, 
+    private _themeService: ThemeService,
+  ) {}
 
   ngOnInit(): void {
+    this._themeService.setTheme(this.selectedTheme)
     this._selectedColumns = this.cols.filter((col) => col.default);
 
     this.search = this._fb.control('');
@@ -90,20 +98,20 @@ export class AppComponent implements OnInit, OnDestroy {
   onPageChange(e: PaginatorState) {
     this.rows = e.rows;
     this.page = e.page !== undefined ? e.page + 1 : undefined;
-    this.getTableData()
+    this.getTableData();
   }
 
 
   get isShowSpinner() {
-    return this.isLoading() && !this.tableData
+    return this.isLoading() && !this.tableData;
   }
 
   getFullName(row: ITableData) {
-    return `${row.name?.first} ${row.name?.last}`
+    return `${row.name?.first} ${row.name?.last}`;
   }
 
   getFavFruit(fruit: FavFruit) {
-    return fruit === FavFruit.apple ? 'success' : fruit === FavFruit.banana ? 'warning' : 'danger'
+    return fruit === FavFruit.apple ? 'success' : fruit === FavFruit.banana ? 'warning' : 'danger';
   }
 
   getTableData() {
@@ -119,17 +127,17 @@ export class AppComponent implements OnInit, OnDestroy {
       .pipe(take(1))
       .subscribe({
         next: (res) => {
-          const count = res.headers.get('x-total-count')
+          const count = res.headers.get('x-total-count');
 
           if (count) {
-            this.totalCount = Number(count)
+            this.totalCount = Number(count);
           }
 
           if (res.body) {
             this.tableData = res.body;
           }
           this.isVisible = false;
-          this.isLoading.set(false)
+          this.isLoading.set(false);
         },
       })
   }
@@ -148,9 +156,19 @@ export class AppComponent implements OnInit, OnDestroy {
     this._selectedColumns = this.cols.filter((col) => val.includes(col));
   }
 
+  changeTheme() {
+    this.isLight = !this.isLight;
+    this.selectedTheme = this.isLight ? 'light' : 'dark';
+    this._themeService.setTheme(this.selectedTheme);
+  }
+
+  get iconValue() {
+    return this.isLight ? 'pi pi-moon' : 'pi pi-sun';
+  }
+
   ngOnDestroy(): void {
     if (this.subscription) {
-      this.subscription.unsubscribe()
+      this.subscription.unsubscribe();
     }
   }
 }

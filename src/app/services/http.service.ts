@@ -8,12 +8,11 @@ const MAIN_PATH = 'http://localhost:4242/data/';
   providedIn: 'root'
 })
 export class HttpService {
-
   constructor(private _http: HttpClient) {}
 
   getData<T>(filters: { [key: string]: string | number | undefined | null }):  Observable<HttpResponse<T>> {
     const delayTime = Math.random() * 1000 + 1000;
-    const params = this.getParams(filters)
+    const params = this.getParams(filters);
 
     return this._http.get<T>(MAIN_PATH, { params, observe: 'response' }).pipe(delay(delayTime));
   }
