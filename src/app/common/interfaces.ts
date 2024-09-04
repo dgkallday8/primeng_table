@@ -22,3 +22,9 @@ export enum FavFruit {
   banana = 'banana',
   strawberry = 'strawberry',
 }
+
+export interface Column {
+  field: string;
+  header: string;
+  default: boolean;
+}

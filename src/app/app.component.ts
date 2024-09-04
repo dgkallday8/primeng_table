@@ -9,19 +9,13 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import { DialogModule } from 'primeng/dialog';
 import { CheckboxModule } from 'primeng/checkbox';
 import { AvatarModule } from 'primeng/avatar';
-import { FavFruit, ITableData } from './common/interfaces'
+import { Column, FavFruit, ITableData } from './common/interfaces';
 import { SortMeta } from 'primeng/api'
 import { TagModule } from 'primeng/tag';
 import { InputTextModule } from 'primeng/inputtext';
 import { FormBuilder, FormControl, ReactiveFormsModule } from '@angular/forms'
 import { DropdownModule } from 'primeng/dropdown';
 import { MultiSelectModule } from 'primeng/multiselect';
-
-interface Column {
-  field: string;
-  header: string;
-  default: boolean;
-}
 
 @Component({
   selector: 'app-root',
