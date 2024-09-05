@@ -1,3 +1,7 @@
 Project works with JSON Server.
-It uses PrimeNg.
-Npm i -> npm build -> npm start
+##
+It uses PrimeNg. 
+##
+Basic layout for mobile devices. 
+##
+Npm i -> npm build -> npm start.

@@ -30,3 +30,53 @@
  .multi {
   margin-right: 20px;
  }
+
+@media only screen and (max-width: 768px) {
+  .caption_wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    align-items: center;
+
+    input {
+      width: 100%;
+    }
+  }
+
+  .select_block {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    
+    .multi {
+      margin-right: 0;
+    }
+  }
+
+  p-table {
+    font-size: 10px;
+  }
+
+  ::ng-deep {
+    th,
+    td {
+      padding: 4px;
+      white-space: nowrap;
+    }
+
+    p-paginator {
+      button {
+        min-width: 16px;
+        height: 16px;
+      }
+
+      .p-paginator.p-component {
+        border-top-left-radius: 0;
+        border-top-right-radius: 0;
+        border-top: none;
+      }
+    }
+
+  }
+}
