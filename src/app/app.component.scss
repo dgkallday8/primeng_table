@@ -8,6 +8,19 @@
   }
 }
 
+::ng-deep {
+  .p-datatable-header {
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+  }
+
+  .p-paginator.p-component {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-top: none;
+  }
+}
+
 .spinner {
   display: flex;
   justify-content: center;
@@ -54,29 +67,26 @@
     }
   }
 
-  p-table {
-    font-size: 10px;
-  }
-
   ::ng-deep {
     th,
     td {
-      padding: 4px;
       white-space: nowrap;
+      font-size: 14px;
+      padding: 4px;
     }
 
     p-paginator {
       button {
-        min-width: 16px;
-        height: 16px;
-      }
-
-      .p-paginator.p-component {
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
-        border-top: none;
+        min-width: 20px;
+        height: 20px;
       }
     }
 
+    .p-paginator-rpp-options {
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+      height: 32px;
+    }
   }
 }
